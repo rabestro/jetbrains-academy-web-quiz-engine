@@ -45,12 +45,12 @@ public class QuizController {
     @PostMapping(path = "/{id}/solve", consumes = "application/json")
     public Feedback checkAnswer(@PathVariable Long id, @RequestBody Answer answer) {
         final var quiz = getQuiz(id);
-        final var isCorrect = Arrays.equals(quiz.getAnswer(), answer.getAnswer());
+        final var isCorrect = Arrays.equals(quiz.getAnswer(), answer.getAnswer())
+                || quiz.getAnswer() == null && Arrays.equals(new int[] {}, answer.getAnswer());
 
         logger.trace("Solution is " + Arrays.toString(answer.getAnswer()));
         logger.trace("Correct is " + Arrays.toString(quiz.getAnswer()));
 
         return new Feedback(isCorrect);
     }
-
 }
